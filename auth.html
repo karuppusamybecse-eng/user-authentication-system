@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Authentication System</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        width: 300px;
+        text-align: center;
+    }
+
+    input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    .link {
+        color: #fff;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    #welcome-page {
+        display: none;
+    }
+
+    #login-page, #register-page {
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container" id="register-page">
+    <h2>Register</h2>
+    <input type="text" id="reg-username" placeholder="Username" required>
+    <input type="password" id="reg-password" placeholder="Password" required>
+    <button onclick="register()">Register</button>
+    <p>Already have an account? <span class="link" onclick="showLogin()">Login</span></p>
+</div>
+
+<div class="container" id="login-page">
+    <h2>Login</h2>
+    <input type="text" id="login-username" placeholder="Username" required>
+    <input type="password" id="login-password" placeholder="Password" required>
+    <button onclick="login()">Login</button>
+    <p>Don't have an account? <span class="link" onclick="showRegister()">Register</span></p>
+</div>
+
+<div class="container" id="welcome-page">
+    <h2>Welcome, <span id="welcome-user"></span>!</h2>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+    // Show register page by default
+    document.getElementById("register-page").style.display = "block";
+
+    function showLogin() {
+        document.getElementById("register-page").style.display = "none";
+        document.getElementById("login-page").style.display = "block";
+        document.getElementById("welcome-page").style.display = "none";
+    }
+
+    function showRegister() {
+        document.getElementById("register-page").style.display = "block";
+        document.getElementById("login-page").style.display = "none";
+        document.getElementById("welcome-page").style.display = "none";
+    }
+
+    function showWelcome(username) {
+        document.getElementById("register-page").style.display = "none";
+        document.getElementById("login-page").style.display = "none";
+        document.getElementById("welcome-page").style.display = "block";
+        document.getElementById("welcome-user").textContent = username;
+    }
+
+    function register() {
+        const username = document.getElementById("reg-username").value.trim();
+        const password = document.getElementById("reg-password").value;
+
+        if (!username || !password) {
+            alert("Please fill out all fields.");
+            return;
+        }
+
+        // Save credentials in localStorage
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+
+        alert("Registration successful! You can now log in.");
+        showLogin();
+    }
+
+    function login() {
+        const username = document.getElementById("login-username").value.trim();
+        const password = document.getElementById("login-password").value;
+
+        const storedUser = localStorage.getItem("username");
+        const storedPass = localStorage.getItem("password");
+
+        if (username === storedUser && password === storedPass) {
+            showWelcome(username);
+        } else {
+            alert("Invalid username or password.");
+        }
+    }
+
+    function logout() {
+        showLogin();
+    }
+</script>
+
+</body>
+</html>
